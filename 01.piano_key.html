@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+  html{
+    background-image: url('img/halloweenbg.jpg');
+  }
+  .key{
+    display: block;
+    width: 60px;
+    border: 4px solid #fff;
+    padding:20px;
+    margin: 5px;
+    text-align: center;
+    float: left;
+    transition: all 0.07s;
+    color:#fff;
+    border-radius: 4px;
+  }
+  .playing{
+    border: 1px solid #000;
+    transform: scale(1.1);
+    color:#000;
+  }
+  .keys{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 680px;
+  }
+  </style>
+
+  <title>Piano</title>
+</head>
+<body>
+  <div class="keys">
+    <div data-key="65" class="key">A</div>
+    <div data-key="83" class="key">S</div>
+    <div data-key="68" class="key">D</div>
+    <div data-key="70" class="key">F</div>
+    <div data-key="71" class="key">G</div>
+    <div data-key="72" class="key">H</div>
+    <div data-key="74" class="key">J</div>
+    <div data-key="75" class="key">K</div>
+    <div data-key="76" class="key">L</div>
+  </div>
+  <audio data-key="65" src="wav/a1.wav"></audio>
+  <audio data-key="83" src="wav/a1s.wav"></audio>
+  <audio data-key="68" src="wav/b1.wav"></audio>
+  <audio data-key="70" src="wav/c1.wav"></audio>
+  <audio data-key="71" src="wav/c1s.wav"></audio>
+  <audio data-key="72" src="wav/c2.wav"></audio>
+  <audio data-key="74" src="wav/d1.wav"></audio>
+  <audio data-key="75" src="wav/d1s.wav"></audio>
+  <audio data-key="76" src="wav/e1.wav"></audio>
+
+</body>
+</html>
+<script>
+function playSound(e){
+    // console.log(e);
+    // console.log(e.keyCode);
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    // console.log(audio);
+    // console.log(key);
+    if(!audio) return; //stop the function from running all together
+    audio.currentTime = 0; //rewind the start
+    audio.play();
+    key.classList.add("playing");
+    // key.addClass('playing');
+  }
+  function removeTransition(e){
+    if(e.propertyName !== "transform") return;//skip if it's not transform
+    e.target.classList.remove('playing');
+  }
+  const keys = document.querySelectorAll('.key');
+  keys.forEach(key => key.addEventListener('transitionend',removeTransition));
+  window.addEventListener('keydown', playSound);
+</script>
